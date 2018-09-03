@@ -7,6 +7,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import moment from "moment";
 
 import {Login} from './component/Login';
+import { TextField } from '@material-ui/core';
+import {Button} from '@material-ui/core';
+import {BrowserRouter as Router, Link, Route} from 'react-router-dom'
 
 class App extends Component {
 
@@ -22,28 +25,25 @@ class App extends Component {
 
     render() {
 
-        return (
-            <div className="App">
-				
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo"/>
-                    <h1 className="App-title">TODO React App</h1>
-                </header>
-
+        const LoginView = () => (
+            <Login/>
+        );
+        const TodoView = () => (
+            <div>
+                
                 <br/>
                 <br/>
-				<Login/>
                 <form onSubmit={this.handleSubmit} className="todo-form">
                     <h3>New TODO</h3>
                     <label htmlFor="text" className="right-margin">
                         Text:
                     </label>
 
-                    <input
+                    <TextField
                         id="text"
                         onChange={this.handleTextChange}
                         value={this.state.text}>
-                    </input>
+                    </TextField>
 
                     <br/>
                     <br/>
@@ -51,12 +51,12 @@ class App extends Component {
                         Priority:
                     </label>
 
-                    <input
+                    <TextField
                         id="priority"
                         type="number"
                         onChange={this.handlePriorityChange}
                         value={this.state.priority}>
-                    </input>
+                    </TextField>
                     <br/>
                     <br/>
 
@@ -67,15 +67,43 @@ class App extends Component {
                         onChange={this.handleDateChange}>
                     </DatePicker>
                     <br/>
-                    <button>
+                    <Button>
                         Add #{this.state.items.length + 1}
-                    </button>
+                    </Button>
                 </form>
 				
                 <br/>
                 <br/>
                 <TodoList todoList={this.state.items}/>
             </div>
+        );
+
+
+        return (
+            <div className="App">
+                <Router>
+                <div className="App">
+                    <header className="App-header">
+                        <img src={logo} className="App-logo" alt="logo"/>
+                        <h1 className="App-title">TODO React App</h1>
+                    </header>
+
+                    <br/>
+                    <br/>
+
+                    <ul>
+                        <li><Link to="/">Login</Link></li>
+                        <li><Link to="/todo">Todo</Link></li>
+                    </ul>
+
+                    <div>
+                        <Route exact path="/" component={LoginView}/>
+                        <Route path="/todo" component={TodoView}/>
+                    </div>
+                </div>
+                </Router>
+			</div>
+                
         );
     }
 
