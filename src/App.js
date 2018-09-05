@@ -67,7 +67,9 @@ class App extends Component {
                         onChange={this.handleDateChange}>
                     </DatePicker>
                     <br/>
-                    <Button>
+                    <Button
+                    type="submit"
+                    className="submit">
                         Add #{this.state.items.length + 1}
                     </Button>
                 </form>
