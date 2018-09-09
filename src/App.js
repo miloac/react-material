@@ -11,22 +11,30 @@ import { TextField } from '@material-ui/core';
 import {Button} from '@material-ui/core';
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom'
 
+localStorage.setItem("email", "test@mail.com");
+localStorage.setItem("password", "123");
+
 class App extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {items: [], text: '', priority: 0, dueDate: moment()};
+        this.state = {items: [], text: '', priority: 0, dueDate: moment(), isLoggedIn: false, password:'', email:''};
         this.handleTextChange = this.handleTextChange.bind(this);
         this.handlePriorityChange = this.handlePriorityChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        
     }
 
 
     render() {
 
         const LoginView = () => (
-            <Login/>
+            <Login
+            handleLogin = {this.handleLogin}
+            handleEmail = {this.handleEmail}
+            handlePassword = {this.handlePassword}
+            />
         );
         const TodoView = () => (
             <div>
@@ -80,33 +88,65 @@ class App extends Component {
             </div>
         );
 
-
-        return (
-            <div className="App">
-                <Router>
+        if(!this.state.isLoggedIn){
+            return (
                 <div className="App">
-                    <header className="App-header">
-                        <img src={logo} className="App-logo" alt="logo"/>
-                        <h1 className="App-title">TODO React App</h1>
-                    </header>
-
-                    <br/>
-                    <br/>
-
-                    <ul>
-                        <li><Link to="/">Login</Link></li>
-                        <li><Link to="/todo">Todo</Link></li>
-                    </ul>
-
-                    <div>
-                        <Route exact path="/" component={LoginView}/>
-                        <Route path="/todo" component={TodoView}/>
+                    <Router>
+                    <div className="App">
+                        <header className="App-header">
+                            <img src={logo} className="App-logo" alt="logo"/>
+                            <h1 className="App-title">TODO React App</h1>
+                        </header>
+  
+                        <div>
+                            <Route exact path="/" component={LoginView}/>
+                        </div>
                     </div>
+                    </Router>
                 </div>
-                </Router>
-			</div>
-                
-        );
+                    
+            );
+        }
+        else{
+            return (
+                <div className="App">
+                    <Router>
+                    <div className="App">
+                        <header className="App-header">
+                            <img src={logo} className="App-logo" alt="logo"/>
+                            <h1 className="App-title">TODO React App</h1>
+                        </header>
+
+    
+                        <div>
+                            <Route path="/" component={TodoView}/>
+                        </div>
+                    </div>
+                    </Router>
+                </div>
+                    
+            );
+        }
+        
+    }
+
+    handleLogin = e => {
+        if(localStorage.getItem("email") == this.state.email)
+        this.setState({
+            isLoggedIn: true
+        });
+    }
+
+    handleEmail(e) {
+        this.setState({
+            email: e.target.value
+        });
+    }
+
+    handlePassword(e) {
+        this.setState({
+            password: e.target.value
+        });
     }
 
     handleTextChange(e) {
