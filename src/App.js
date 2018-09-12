@@ -23,7 +23,8 @@ class App extends Component {
         this.handlePriorityChange = this.handlePriorityChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        
+        this.handleEmail = this.handleEmail.bind(this);
+        this.handlePassword = this.handlePassword.bind(this);
     }
 
 
@@ -131,22 +132,18 @@ class App extends Component {
     }
 
     handleLogin = e => {
-        if(localStorage.getItem("email") == this.state.email)
+        if(localStorage.getItem("email") == this.state.email && localStorage.getItem("password") == this.state.password)
         this.setState({
             isLoggedIn: true
         });
     }
 
     handleEmail(e) {
-        this.setState({
-            email: e.target.value
-        });
+        this.state.email = e.target.value
     }
 
     handlePassword(e) {
-        this.setState({
-            password: e.target.value
-        });
+        this.state.password = e.target.value
     }
 
     handleTextChange(e) {
