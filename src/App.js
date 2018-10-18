@@ -18,13 +18,14 @@ class App extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {items: [], text: '', priority: 0, dueDate: moment(), isLoggedIn: false, password:'', email:''};
+        this.state = {items: [], text: '', priority: 0, dueDate: moment(), isLoggedIn: false, password:'', email:'', file:''};
         this.handleTextChange = this.handleTextChange.bind(this);
         this.handlePriorityChange = this.handlePriorityChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleEmail = this.handleEmail.bind(this);
         this.handlePassword = this.handlePassword.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
     }
 
 
@@ -75,6 +76,7 @@ class App extends Component {
                         placeholderText="Due date"
                         onChange={this.handleDateChange}>
                     </DatePicker>
+                    <input type="file" id="file" onChange={this.handleInputChange}/>
                     <br/>
                     <Button
                     type="submit"
@@ -166,6 +168,17 @@ class App extends Component {
 
     handleSubmit(e) {
 
+        let data = new FormData();
+        data.append('file', this.state.file);
+
+        this.axios.post('files', data)
+            .then(function (response) {
+                console.log("file uploaded!", data);
+        })
+        .catch(function (error) {
+            console.log("failed file upload", error);
+        });
+
         e.preventDefault();
 
         if (!this.state.text.length || !this.state.priority.length || !this.state.dueDate)
@@ -183,6 +196,12 @@ class App extends Component {
             priority: '',
             dueDate: ''
         }));
+    }
+
+    handleInputChange(e) {
+        this.setState({
+            file: e.target.files[0]
+        });                
     }
 
 }
